@@ -162,8 +162,13 @@ public:
     void enableScolling(bool enable);
     void setDisplayMode(DisplayMode mode);
     void setDisplayPower(DisplayPower power);
+    void fillScreen(uint16_t color);
+    void fillRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
+
 private:
     void _sendCmd(uint8_t cmd);
+    void _wait(void);
+
     uint8_t _cs, _dc, _mosi, _sck;
 };
 

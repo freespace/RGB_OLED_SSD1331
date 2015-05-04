@@ -76,6 +76,11 @@ void SSD1331::_sendCmd(uint8_t c)
     digitalWrite(_cs,HIGH);
 }
 
+void SSD1331::_wait(void)
+{
+  delay(10);
+}
+
 void SSD1331::init(void)
 {
     pinMode(_dc, OUTPUT);
@@ -264,4 +269,29 @@ void SSD1331::setDisplayPower(DisplayPower power)
     _sendCmd(power);
 }
 
+void SSD1331::fillScreen(uint16_t color)
+{
+    drawFrame(0, 0, RGB_OLED_WIDTH, RGB_OLED_HEIGHT, color, color);
 
+    // this is needed because it takes time for a fill to happen, and
+    // if another command is issued too quickly corruption occurs.
+    _wait();
+}
+
+void SSD1331::fillRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color) {
+    _sendCmd(CMD_FILL_WINDOW);//fill window
+    _sendCmd(ENABLE_FILL);
+    _sendCmd(CMD_DRAW_RECTANGLE);//draw rectangle
+    _sendCmd(x);//start column
+    _sendCmd(y);//start row
+    // -1 are needed b/c the BORDER takes up 1px OUTSIDE what
+    // we specified!
+    _sendCmd(x+width-1);//end column
+    _sendCmd(y+height-1);//end row
+    _sendCmd((uint8_t)((color>>11)&0x1F));//R
+    _sendCmd((uint8_t)((color>>5)&0x3F));//G
+    _sendCmd((uint8_t)(color&0x1F));//B
+    _sendCmd((uint8_t)((color>>11)&0x1F));//R
+    _sendCmd((uint8_t)((color>>5)&0x3F));//G
+    _sendCmd((uint8_t)(color&0x1F));//B
+}
