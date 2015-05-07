@@ -7,8 +7,8 @@
 *
 * All rights reserved.
 *
-* This library is based on Adafruit's SSD1331-OLED-Driver-Library. Thanks to 
-* their contribution to the code, we modify it and add more interface to 
+* This library is based on Adafruit's SSD1331-OLED-Driver-Library. Thanks to
+* their contribution to the code, we modify it and add more interface to
 * support our Seeed's Xadow RGB OLED 96*64 module.
 *
 * Below is the introduction of Adafruit's Color OLED module, we add it to here
@@ -22,8 +22,8 @@
 *
 * These displays use SPI to communicate.
 *
-* Adafruit invests time and resources providing this open source code, 
-* please support Adafruit and open-source hardware by purchasing 
+* Adafruit invests time and resources providing this open source code,
+* please support Adafruit and open-source hardware by purchasing
 * products from Adafruit!
 *
 * Written by Limor Fried/Ladyada for Adafruit Industries.
