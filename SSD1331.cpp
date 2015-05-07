@@ -7,8 +7,8 @@
 *
 * All rights reserved.
 *
-* This library is based on Adafruit's SSD1331-OLED-Driver-Library. Thanks to 
-* their contribution to the code, we modify it and add more interface to 
+* This library is based on Adafruit's SSD1331-OLED-Driver-Library. Thanks to
+* their contribution to the code, we modify it and add more interface to
 * support our Seeed's Xadow RGB OLED 96*64 module.
 *
 * Below is the introduction of Adafruit's Color OLED module, we add it to here
@@ -22,8 +22,8 @@
 *
 * These displays use SPI to communicate.
 *
-* Adafruit invests time and resources providing this open source code, 
-* please support Adafruit and open-source hardware by purchasing 
+* Adafruit invests time and resources providing this open source code,
+* please support Adafruit and open-source hardware by purchasing
 * products from Adafruit!
 *
 * Written by Limor Fried/Ladyada for Adafruit Industries.
@@ -89,14 +89,21 @@ void SSD1331::init(void)
     SPI.begin();
 
     _sendCmd(CMD_DISPLAY_OFF);          //Display Off
+
+    // these adjusts the relative brightness of the three colours.
+    // Ranges from 0..255
     _sendCmd(CMD_SET_CONTRAST_A);       //Set contrast for color A
     _sendCmd(0x91);                     //145
     _sendCmd(CMD_SET_CONTRAST_B);       //Set contrast for color B
     _sendCmd(0x50);                     //80
     _sendCmd(CMD_SET_CONTRAST_C);       //Set contrast for color C
     _sendCmd(0x7D);                     //125
+
+    // master current control. Smaller this is the dimmer the over all
+    // display. Rannges from 0...15
     _sendCmd(CMD_MASTER_CURRENT_CONTROL);//master current control
-    _sendCmd(0x06);                     //6
+    _sendCmd(0x03);
+
     _sendCmd(CMD_SET_PRECHARGE_SPEED_A);//Set Second Pre-change Speed For ColorA
     _sendCmd(0x64);                     //100
     _sendCmd(CMD_SET_PRECHARGE_SPEED_B);//Set Second Pre-change Speed For ColorB
@@ -104,7 +111,7 @@ void SSD1331::init(void)
     _sendCmd(CMD_SET_PRECHARGE_SPEED_C);//Set Second Pre-change Speed For ColorC
     _sendCmd(0x64);                     //100
     _sendCmd(CMD_SET_REMAP);            //set remap & data format
-    _sendCmd(0x72);                     //0x72              
+    _sendCmd(0x72);                     //0x72
     _sendCmd(CMD_SET_DISPLAY_START_LINE);//Set display Start Line
     _sendCmd(0x0);
     _sendCmd(CMD_SET_DISPLAY_OFFSET);   //Set display offset
@@ -115,11 +122,15 @@ void SSD1331::init(void)
     _sendCmd(CMD_SET_MASTER_CONFIGURE); //Set master configuration
     _sendCmd(0x8E);
     _sendCmd(CMD_POWER_SAVE_MODE);      //Set Power Save Mode
-    _sendCmd(0x00);                     //0x00
+    _sendCmd(0x1A);                     //0x00
     _sendCmd(CMD_PHASE_PERIOD_ADJUSTMENT);//phase 1 and 2 period adjustment
     _sendCmd(0x31);                     //0x31
+
+    // high nibble sets clock speed, low nibble sets clock divider.
+    // A slower clock consumes less power
     _sendCmd(CMD_DISPLAY_CLOCK_DIV);    //display clock divider/oscillator frequency
-    _sendCmd(0xF0);
+    _sendCmd(0x00);
+
     _sendCmd(CMD_SET_PRECHARGE_VOLTAGE);//Set Pre-Change Level
     _sendCmd(0x3A);
     _sendCmd(CMD_SET_V_VOLTAGE);        //Set vcomH
